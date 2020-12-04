@@ -1,0 +1,31 @@
+.navbar {
+  background: linear-gradient(
+    275deg,
+    rgb(5, 68, 94) 10%,
+    rgba(24, 154, 180) 60%,
+    rgb(117, 230, 218) 100%
+  );
+  transition: all ease 10s;
+}
+.navbar {
+  box-shadow: 0px 0.5px 0.5px 0.1px #75e6da;
+}
+.navbar-nav {
+  margin-left: auto;
+}
+
+.navbar-nav .nav-item a {
+  padding: 10px 20px !important;
+  transition: all ease 0.5s;
+}
+
+.logo {
+  height: 60px;
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+}

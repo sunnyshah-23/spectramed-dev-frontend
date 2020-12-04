@@ -1,0 +1,43 @@
+.tc {
+  margin-top: 100px;
+}
+
+.tc .card-header {
+  background-color: #a8dbed;
+}
+.lists {
+  margin-left: 10px;
+  padding: 10px;
+}
+
+.lists p {
+  font-family: "Arvo", serif;
+  font-size: 12px;
+  text-align: justify;
+}
+
+.lists #nest {
+  margin-left: 25px;
+}
+
+.service #nest {
+  font-size: 12px;
+  font-family: "Arvo", serif;
+}
+.returns #nest {
+  font-size: 12px !important;
+  font-family: "Arvo", serif;
+}
+
+b.dis_title {
+  text-align: center;
+}
+.dis_content {
+  font-family: "Arvo", serif;
+  font-size: 12px;
+  text-align: justify;
+}
+
+.returns #nest {
+  font-size: 10px;
+}

@@ -1,0 +1,59 @@
+@import url("https://fonts.googleapis.com/css2?family=Arvo&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap");
+
+body {
+  background-color: #f1f2f5;
+}
+
+.text_our_services {
+  margin-top: 40px;
+  font-family: "Montserrat", sans-serif;
+}
+
+.card_ourservices .card {
+  margin-bottom: 20px;
+  border-radius: 15px;
+}
+
+.card_ourservices h5,
+p {
+  font-family: "Arvo", serif;
+}
+
+.card_ourservices p {
+  text-align: justify;
+}
+
+.card_ourservices p {
+  font-size: 15px;
+}
+
+.card_ourservices .card:hover {
+  animation: bounce 1.5s ease-in-out;
+}
+@keyframes bounce {
+  0%,
+  20%,
+  60%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-30px);
+  }
+  80% {
+    transform: translateY(-20ox);
+  }
+}
+
+@media (max-width: 575.98px) {
+  .card_ourservices {
+    margin-left: 0%;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .card_ourservices {
+    margin-left: 0%;
+  }
+}

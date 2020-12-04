@@ -1,0 +1,76 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cutive&display=swap");
+.banner {
+  background: linear-gradient(
+    275deg,
+    rgb(5, 68, 94) 10%,
+    rgba(24, 154, 180) 60%,
+    rgb(117, 230, 218) 100%
+  );
+}
+.text {
+  margin-top: 100px;
+}
+.banner img {
+  margin-top: 85px;
+}
+
+.text p {
+  /* font-family: "Roboto", sans-serif; */
+  font-family: "Cutive", serif;
+  text-align: center;
+}
+
+.text .title {
+  font-size: 45px;
+  color: rgb(15, 13, 13);
+}
+
+.text .subtitle {
+  font-size: 18px;
+}
+#btn_text {
+  font-size: 16px !important;
+  border: none !important;
+}
+/* .buy_button {
+  padding: 6px 10px;
+  text-align: center;
+} */
+
+/* .buy_button button {
+  background-color: #0275d8;
+  color: blanchedalmond;
+
+  margin-top: 15px;
+  border: none !important;
+} */
+
+.buy_button:hover {
+  background-color: whitesmoke;
+  color: #0275d8;
+}
+@media (max-width: 575.98px) {
+  .banner img {
+    margin-top: 20px;
+  }
+
+  .text .title {
+    font-size: 30px;
+  }
+  .text .subtitle {
+    font-size: 12px;
+  }
+  .banner .text p {
+    text-align: center;
+  }
+  .buy_button {
+    text-align: center;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .banner img {
+    margin-top: 20px;
+  }
+}
