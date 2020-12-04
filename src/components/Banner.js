@@ -4,8 +4,8 @@ import image from "../images/healthcare.svg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { createEnquiry } from "../user/helper/formapi";
+import axios from "axios";
 
-var form = new FormData();
 const onclicktc = (e) => {
   e.preventDefault();
   window.location = "/termsandconditions";
@@ -24,21 +24,47 @@ function Banner() {
 
   const [checkbox, setCheckbox] = useState(false);
 
-  const { name, email, phone, test_type, test_name, pincode, error } = values;
+  const {
+    name,
+    email,
+    phone,
+    test_type,
+    test_name,
+    pincode,
+    photo,
+    error,
+  } = values;
 
-  const handleChange = (name) => (event) => {
-    //setValues({ ...values, error: false, [name]: event.target.value.trim() });
-    const value = name === "photo" ? event.target.files[0] : event.target.value;
-    // console.log(name,value)
-    if (name === "photo") {
-      //console.log('myfile',value, value.name);
-      form.append("myfile", value);
-      console.log("MYFILE", form.get("myfile"));
+  const uploadImage = async (e) => {
+    const file = e.target.files[0];
+    if (e.target.files.length > 1) {
+      const base64 = await convertBase64(file);
+      console.log("BASE64", base64);
+      setValues((prevState) => ({ ...prevState, photo: base64 }));
     }
-
-    setValues({ ...values, [name]: value });
   };
 
+  const convertBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+
+  const handleChange = (evt) => {
+    const value = evt.target.value;
+    setValues({
+      ...values,
+      [evt.target.name]: value,
+    });
+  };
   // const validateEmail = (email) =>{
   //   var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
   //   return emailPattern.test(email);
@@ -53,58 +79,35 @@ function Banner() {
   };
 
   const onSubmit = (event) => {
-    form.append("name", values.name);
-    form.append("email", values.email);
-    form.append("phone", values.phone);
-    form.append("test_type", values.test_type);
-    form.append("test_name", values.test_name);
-    form.append("pincode", values.pincode);
     event.preventDefault();
+    console.log("VALUES", values);
     if (pincodes(pincode) && validatePhone(phone) && name) {
       setValues({ ...values, error: false });
+      axios
+        .post("http://localhost:8000/api/enquiry", values)
+        .then((res) => {
+          console.log(res);
+          toast.success("You will soon recieve a call");
+          document.getElementById("myform").reset();
+          console.log("VALUES", values);
+          setValues({
+            name: "",
+            email: "",
+            phone: "",
+            test_type: "",
+            test_name: "",
+            pincode: "",
+            error: "",
+            photo: "",
+          });
 
-      console.log(
-        form.get("name"),
-        form.get("email"),
-        form.get("phone"),
-        form.get("myfile")
-      );
-      createEnquiry(form)
-        .then((data) => {
-          if (data?.err) {
-            setValues({ ...values, error: data?.err });
-            toast.error("Unsuccessful");
-            console.log(error);
-          } else {
-            toast.success("You will soon recieve a call");
-            document.getElementById("myform").reset();
-            console.log("VALUES", values);
-            console.log(data);
-
-            setValues({
-              name: "",
-              email: "",
-              phone: "",
-              test_type: "",
-              test_name: "",
-              pincode: "",
-              error: "",
-              photo: "",
-            });
-
-            form.delete("myfile");
-            console.log("VALUES AFTER SUBMIT", values);
-            console.log(
-              "AFTER SUCCESS FORMDATA CHECK",
-              form.get("name"),
-              form.get("myfile")
-            );
-
-            setCheckbox(false);
-          }
+          setCheckbox(false);
         })
-
-        .catch((err) => console.log(err));
+        .catch((error) => {
+          setValues({ ...values, error: error.error });
+          toast.error("Unsuccessful");
+          console.log(error);
+        });
     } else {
       toast.error("Invalid Details");
       setValues({
@@ -119,7 +122,53 @@ function Banner() {
       });
       setCheckbox(false);
     }
-    //window.location = "/";
+
+    //   if (pincodes(pincode) && validatePhone(phone) && name) {
+    //     setValues({ ...values, error: false });
+
+    //     createEnquiry(form)
+    //       .then((data) => {
+    //         if (data?.err) {
+    //           setValues({ ...values, error: data?.err });
+    //           toast.error("Unsuccessful");
+    //           console.log(error);
+    //         } else {
+    //           toast.success("You will soon recieve a call");
+    //           document.getElementById("myform").reset();
+    //           console.log("VALUES", values);
+    //           console.log(data);
+
+    //           setValues({
+    //             name: "",
+    //             email: "",
+    //             phone: "",
+    //             test_type: "",
+    //             test_name: "",
+    //             pincode: "",
+    //             error: "",
+    //             photo: "",
+    //           });
+
+    //           setCheckbox(false);
+    //         }
+    //       })
+
+    //       .catch((err) => console.log(err));
+    //   } else {
+    //     toast.error("Invalid Details");
+    //     setValues({
+    //       name: "",
+    //       email: "",
+    //       phone: "",
+    //       test_type: "",
+    //       test_name: "",
+    //       pincode: "",
+    //       error: "",
+    //       photo: "",
+    //     });
+    //     setCheckbox(false);
+    //   }
+    //   //window.location = "/";
   };
   return (
     <div className="banner">
@@ -183,7 +232,8 @@ function Banner() {
                   <input
                     type="text"
                     className="form-control"
-                    onChange={handleChange("name")}
+                    name="name"
+                    onChange={handleChange}
                     value={name}
                     required
                   ></input>
@@ -193,7 +243,8 @@ function Banner() {
                   <input
                     type="email"
                     className="form-control"
-                    onChange={handleChange("email")}
+                    name="email"
+                    onChange={handleChange}
                     value={email}
                   ></input>
                 </div>
@@ -203,7 +254,8 @@ function Banner() {
                     type="number"
                     className="form-control"
                     placeholder="Eg. 7208028195"
-                    onChange={handleChange("phone")}
+                    name="phone"
+                    onChange={handleChange}
                     value={phone}
                     required
                   ></input>
@@ -212,7 +264,8 @@ function Banner() {
                   <label htmlFor="test_type">Test Type</label>
                   <select
                     className="form-control"
-                    onChange={handleChange("test_type")}
+                    name="test_type"
+                    onChange={handleChange}
                     value={test_type}
                   >
                     <option defaultValue>Choose..</option>
@@ -226,7 +279,8 @@ function Banner() {
                     type="text"
                     className="form-control"
                     placeholder="(optional)"
-                    onChange={handleChange("test_name")}
+                    name="test_name"
+                    onChange={handleChange}
                     value={test_name}
                   ></input>
                 </div>
@@ -237,7 +291,8 @@ function Banner() {
                     type="number"
                     className="form-control"
                     placeholder="Eg.400069 "
-                    onChange={handleChange("pincode")}
+                    name="pincode"
+                    onChange={handleChange}
                     value={pincode}
                     required
                   ></input>
@@ -251,7 +306,7 @@ function Banner() {
                     type="file"
                     className="form-control-file"
                     id="upload"
-                    onChange={handleChange("photo")}
+                    onChange={(e) => uploadImage(e)}
                   />
                 </div>
 
