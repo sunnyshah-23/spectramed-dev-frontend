@@ -57,10 +57,11 @@ function Banner() {
       [evt.target.name]: value,
     });
   };
-  // const validateEmail = (email) =>{
-  //   var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-  //   return emailPattern.test(email);
-  // }
+
+  const validateEmail = (email) => {
+    var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    return emailPattern.test(email);
+  };
 
   const pincodes = (pin) => {
     return pin > 400000 && pin < 499999;
@@ -73,7 +74,12 @@ function Banner() {
   const onSubmit = (event) => {
     event.preventDefault();
     console.log("VALUES", values);
-    if (pincodes(pincode) && validatePhone(phone) && name) {
+    if (
+      pincodes(pincode) &&
+      validatePhone(phone) &&
+      name &&
+      validateEmail(email)
+    ) {
       setValues({ ...values, error: false });
       axios
         .post("http://localhost:8000/api/enquiry", values)
