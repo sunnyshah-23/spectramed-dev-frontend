@@ -3,7 +3,6 @@ import "./Banner.css";
 import image from "../images/healthcare.svg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { createEnquiry } from "../user/helper/formapi";
 import axios from "axios";
 
 const onclicktc = (e) => {
@@ -24,23 +23,16 @@ function Banner() {
 
   const [checkbox, setCheckbox] = useState(false);
 
-  const {
-    name,
-    email,
-    phone,
-    test_type,
-    test_name,
-    pincode,
-    photo,
-    error,
-  } = values;
+  const { name, email, phone, test_type, test_name, pincode } = values;
 
   const uploadImage = async (e) => {
     const file = e.target.files[0];
-    if (e.target.files.length > 1) {
+    if (file) {
       const base64 = await convertBase64(file);
       console.log("BASE64", base64);
       setValues((prevState) => ({ ...prevState, photo: base64 }));
+    } else {
+      setValues((prevState) => ({ ...prevState, photo: "" }));
     }
   };
 
@@ -122,53 +114,6 @@ function Banner() {
       });
       setCheckbox(false);
     }
-
-    //   if (pincodes(pincode) && validatePhone(phone) && name) {
-    //     setValues({ ...values, error: false });
-
-    //     createEnquiry(form)
-    //       .then((data) => {
-    //         if (data?.err) {
-    //           setValues({ ...values, error: data?.err });
-    //           toast.error("Unsuccessful");
-    //           console.log(error);
-    //         } else {
-    //           toast.success("You will soon recieve a call");
-    //           document.getElementById("myform").reset();
-    //           console.log("VALUES", values);
-    //           console.log(data);
-
-    //           setValues({
-    //             name: "",
-    //             email: "",
-    //             phone: "",
-    //             test_type: "",
-    //             test_name: "",
-    //             pincode: "",
-    //             error: "",
-    //             photo: "",
-    //           });
-
-    //           setCheckbox(false);
-    //         }
-    //       })
-
-    //       .catch((err) => console.log(err));
-    //   } else {
-    //     toast.error("Invalid Details");
-    //     setValues({
-    //       name: "",
-    //       email: "",
-    //       phone: "",
-    //       test_type: "",
-    //       test_name: "",
-    //       pincode: "",
-    //       error: "",
-    //       photo: "",
-    //     });
-    //     setCheckbox(false);
-    //   }
-    //   //window.location = "/";
   };
   return (
     <div className="banner">
