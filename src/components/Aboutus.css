@@ -20,8 +20,10 @@ body {
 .card_aboutus p {
   font-family: "Arvo", serif;
   /* font-family: "Crimson Text", serif; */
-  text-align: justify;
-  text-justify: inter-word;
+  /* text-align: justify;
+  text-justify: inter-word; */
+  display: flex;
+  text-align: center;
 }
 
 .card_aboutus p {
@@ -34,7 +36,7 @@ body {
 
 @media (min-width: 768px) and (max-width: 1024px) {
   .card_aboutus p {
-    text-align: justify;
-    text-justify: inter-word;
+    display: flex;
+    text-align: center;
   }
 }
